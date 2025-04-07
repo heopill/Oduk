@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB3754C22DA3F7BD00D01729 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = BB3754C12DA3F7BD00D01729 /* SnapKit */; };
+		9B740E752DA3FD5C005FE607 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B740E742DA3FD5C005FE607 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB3754C22DA3F7BD00D01729 /* SnapKit in Frameworks */,
+				9B740E752DA3FD5C005FE607 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			);
 			name = Oduk;
 			packageProductDependencies = (
-				BB3754C12DA3F7BD00D01729 /* SnapKit */,
+				9B740E742DA3FD5C005FE607 /* SnapKit */,
 			);
 			productName = Oduk;
 			productReference = BB3754682DA3AE4400D01729 /* Oduk.app */;
@@ -114,7 +114,7 @@
 			mainGroup = BB37545F2DA3AE4400D01729;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				BB3754C02DA3F7BD00D01729 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9B740E732DA3FD5C005FE607 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BB3754692DA3AE4400D01729 /* Products */;
@@ -344,9 +344,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BB3754C02DA3F7BD00D01729 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		9B740E732DA3FD5C005FE607 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.7.1;
@@ -355,9 +355,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BB3754C12DA3F7BD00D01729 /* SnapKit */ = {
+		9B740E742DA3FD5C005FE607 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BB3754C02DA3F7BD00D01729 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 9B740E732DA3FD5C005FE607 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
