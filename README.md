@@ -171,8 +171,12 @@ main                  ← 최종 배포 브랜치
 <br/>
 
 ## 📱 오더ㅋ 목업 이미지
-![Image](https://github.com/user-attachments/assets/31a367a9-7f8d-401a-854f-d2a0a01a49ac)
-![Image](https://github.com/user-attachments/assets/735d0fea-3837-4d0d-9ceb-93cfbb074ef6)
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/31a367a9-7f8d-401a-854f-d2a0a01a49ac" width="45%" />
+  <img src="https://github.com/user-attachments/assets/735d0fea-3837-4d0d-9ceb-93cfbb074ef6" width="45%" />
+</p>
+
 
 <br/>
 
