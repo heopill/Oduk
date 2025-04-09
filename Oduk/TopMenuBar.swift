@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class TopMenuBar: UIView {
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(segmentControl)
@@ -68,7 +69,6 @@ class TopMenuBar: UIView {
 
         segmentControl.addTarget(self, action: #selector(changeUnderBarPosition(_:)), for: .valueChanged)
     }
-
 
     let underLineBar: UIView = {
         let view = UIView()
