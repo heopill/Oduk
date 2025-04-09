@@ -20,9 +20,10 @@ class OrderTable: UIView {
         
         self.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).offset(594)
-            make.leading.equalTo(self.safeAreaLayoutGuide).offset(27)
-            make.width.equalTo(348)
+//            make.top.equalTo(self.safeAreaLayoutGuide).offset(594)
+//            make.leading.equalTo(self.safeAreaLayoutGuide).offset(27)
+//            make.width.equalTo(348)
+            make.edges.equalToSuperview()
             make.height.equalTo(99)
         }
         return tableView
@@ -58,6 +59,7 @@ class OrderTable: UIView {
     }
     
     func makeLabel() {
+        
         countLabel.font = UIFont(name: "GmarketSansMedium", size: 14)
         priceLabel.font = UIFont(name: "GmarketSansMedium", size: 14)
         
@@ -66,17 +68,13 @@ class OrderTable: UIView {
         }
         
         countLabel.snp.makeConstraints { make in
-            make.top.equalTo(tableView.snp.bottom)
-            make.leading.equalTo(self.safeAreaLayoutGuide).offset(193)
-            make.width.equalTo(57)
-            make.height.equalTo(25)
+            make.top.equalTo(self.snp.bottom)
+            make.leading.equalTo(170)
         }
         
         priceLabel.snp.makeConstraints { make in
-            make.top.equalTo(tableView.snp.bottom)
-            make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-35)
-            make.width.equalTo(83)
-            make.height.equalTo(25)
+            make.top.equalTo(self.snp.bottom)
+            make.leading.equalTo(countLabel.snp.trailing).offset(46)
         }
     }
 }

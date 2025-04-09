@@ -26,7 +26,7 @@ class ProductCollectionView: UIView {
         // 컬렉션뷰를 위치 0 크기 0 으로 설정 나중에 Snapkit을 이용해 makeConstraints 해야함. 아까만든 변수 layout을 선정하여 셀을 뱇함
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         // 컬렉션뷰 배경색깔
-        collectionView.backgroundColor = .red
+        collectionView.backgroundColor = .white
         // collcetionView로 반환
         return collectionView
     }()

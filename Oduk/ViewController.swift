@@ -13,16 +13,14 @@ class ViewController: UIViewController {
     //저장 프로퍼티는 extension에 넣을수 없음.
     let productCollectionView = ProductCollectionView()
     let topMenuBar = TopMenuBar()
-  
+    let orderTable = OrderTable()
+    
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureLayout()
         configureCollectionView()
-        self.view = topMenuBar
-        let orderTable = OrderTable()
-        self.view = orderTable
     }
 }
 
@@ -30,18 +28,31 @@ class ViewController: UIViewController {
 extension ViewController {
     func configureLayout() {
         
-        //collectionView를 슈퍼뷰의 추가
+        //아들뷰들 추가
         view.addSubview(productCollectionView)
+        view.addSubview(topMenuBar)
+        view.addSubview(orderTable)
         //컬렉션뷰 제약조건
         productCollectionView.snp.makeConstraints { make in
-//            make.width.equalTo(368)
-//            make.height.equalTo(457)
+            //            make.width.equalTo(368)
+            //            make.height.equalTo(457)
             make.top.equalToSuperview() .offset(190)
             make.bottom.equalToSuperview().offset(-227)
             make.left.equalToSuperview().offset(17)
             make.right.equalToSuperview().offset(-17)
-            
         }
+        topMenuBar.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(131)
+            $0.bottom.equalToSuperview().offset(-706)
+            $0.left.equalToSuperview().offset(16)
+            $0.right.equalToSuperview().offset(-16)
+        }
+        orderTable.snp.makeConstraints { make in
+            make.top.equalTo(productCollectionView.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().offset(-122)
+            make.left.right.equalToSuperview().inset(27)
+        }
+        
     }
     
     
@@ -86,7 +97,7 @@ extension ViewController: UICollectionViewDataSource {
         
         
         return cell
-
+        
     }
     
     
@@ -115,12 +126,3 @@ private var ProductsData: [ProductModel] = [
     ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
     ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원")
 ]
-
-
-
-
-
-
-
-//thinking
-//view가 4개거나( View 그냥 4개 ) , or 페이지가 정해져있거나 (아하!)
