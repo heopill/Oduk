@@ -13,6 +13,9 @@ class TopMenuBar: UIView {
         super.init(frame: frame)
         self.addSubview(segmentControl)
         setUpSegmentControl()
+
+        self.addSubview(underLineBar)
+        setUpUnderLineBar()
     }
 
     required init?(coder: NSCoder) {
@@ -54,13 +57,49 @@ class TopMenuBar: UIView {
         return segment
     }()
 
-    // segmentControl의 제약
+    // segmentControl의 제약, addTarget
     func setUpSegmentControl() {
         segmentControl.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide).offset(72)
             $0.leading.equalTo(safeAreaLayoutGuide).offset(16)
             $0.trailing.equalTo(safeAreaLayoutGuide).offset(-16)
             $0.height.equalTo(36)
+        }
+
+        segmentControl.addTarget(self, action: #selector(changeUnderBarPosition(_:)), for: .valueChanged)
+    }
+
+
+    let underLineBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 250/255, green: 67/255, blue: 89/255, alpha: 1.0)
+        return view
+    }()
+
+    @objc
+    func changeUnderBarPosition(_ segment: UISegmentedControl) {
+        let segmentCount = segmentControl.numberOfSegments
+
+        let segmentWidth = segmentControl.bounds.width / CGFloat(segmentCount)
+
+        let leadingDistance = CGFloat(segmentControl.selectedSegmentIndex) * segmentWidth
+
+        UIView.animate(withDuration: 0.2) {
+            self.underLineBar.snp.updateConstraints {
+                $0.leading.equalTo(self.segmentControl.snp.leading).offset(leadingDistance)
+            }
+            self.segmentControl.layoutIfNeeded()
+        }
+    }
+
+    func setUpUnderLineBar() {
+        let bar = underLineBar
+
+        bar.snp.makeConstraints {
+            $0.top.equalTo(segmentControl.snp.bottom).offset(7)
+            $0.width.equalTo(92)
+            $0.height.equalTo(2)
+            $0.leading.equalTo(segmentControl.snp.leading)
         }
     }
 }
