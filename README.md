@@ -196,14 +196,14 @@ main                  ← 최종 배포 브랜치
     <tr>
       <td><strong>Main Color</strong></td>
       <td align="center">
-        <img src="https://github.com/user-attachments/assets/274deb80-1186-456f-9669-118c5e2f6c40" width="40" height="40">
+        <img src="https://github.com/user-attachments/assets/bbac4b81-ecd7-4c46-ab59-30b0abed4ba1" width="40" height="40">
       </td>
       <td><code>#E53888</code></td>
     </tr>
     <tr>
       <td><strong>Sub Color</strong></td>
       <td align="center">
-        <img src="https://github.com/user-attachments/assets/bbac4b81-ecd7-4c46-ab59-30b0abed4ba1" width="40" height="40">
+        <img src="https://github.com/user-attachments/assets/274deb80-1186-456f-9669-118c5e2f6c40" width="40" height="40">
       </td>
       <td><code>#FD8DC2</code></td>
     </tr>
