@@ -21,6 +21,8 @@ class ViewController: UIViewController {
         configureLayout()
         configureCollectionView()
         self.view = topMenuBar
+        let orderTable = OrderTable()
+        self.view = orderTable
     }
 }
 
