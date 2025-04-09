@@ -12,13 +12,15 @@ class ViewController: UIViewController {
     
     //저장 프로퍼티는 extension에 넣을수 없음.
     let productCollectionView = ProductCollectionView()
-    
+    let topMenuBar = TopMenuBar()
+  
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureLayout()
         configureCollectionView()
+        self.view = topMenuBar
     }
 }
 
@@ -82,6 +84,7 @@ extension ViewController: UICollectionViewDataSource {
         
         
         return cell
+
     }
     
     
