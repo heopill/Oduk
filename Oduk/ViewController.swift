@@ -12,10 +12,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        // 초기 커밋
-        
+        view.backgroundColor = .white
+
+        let orderVC = OrderViewController()
+        addChild(orderVC)
+        view.addSubview(orderVC.view)
+        orderVC.view.frame = view.bounds
+        orderVC.didMove(toParent: self)
     }
 }
             
