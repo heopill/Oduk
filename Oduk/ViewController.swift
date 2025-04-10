@@ -12,32 +12,46 @@ class ViewController: UIViewController, TopMenuBarDelegate {
 
     var currentData: [ProductModel] = []
     var tableViewData: [(String, String)] = []
-    //저장 프로퍼티는 extension에 넣을수 없음.
+  
     let productCollectionView = ProductCollectionView()
     let topMenuBar = TopMenuBar()
     let orderTable = OrderTable()
     let orderVC = OrderView()
     let logo = Logoview()
+
+    // SplashView 생성
+    let splashView = SplashView()
     
-    var pageControl: UIPageControl! // 빨간 점
-    
-    //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
+    // Page Control Indicator
+    var pageControl: UIPageControl! 
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
         configureLayout()
+
+        splashView.frame = view.bounds
+        view.addSubview(splashView)
+      
+        // 여기서 맨 앞의 뷰로 확실히 지정해줌
+        view.bringSubviewToFront(splashView)
+
+        // 현재에서 2초 후에 dismiss되게 세팅
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.dismissSplashView()
+        }
+
         configureCollectionView()
         setupPageControl()
         
         topMenuBar.topMenuBarDelegate = self
         topMenuBar(topMenuBar, didSelectIndex: 0)
         
-        
         orderVC.delegate = self
-        
+
         orderTable.orderView = orderVC
         orderVC.delegate?.removeData()
-        
     }
     
     func setupPageControl() {
@@ -72,63 +86,64 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         }
     }
 
-
-//컬렉션뷰 레아이웃 설정 클로저를 이용해 초기화 해주고 0으로 설정해줬기때문에 제약조건 설정함.
+// 컬렉션뷰 레아이웃 설정 클로저를 이용해 초기화 해주고 0으로 설정해줬기때문에 제약조건 설정함.
 extension ViewController {
     func configureLayout() {
         
-        
-        //아들뷰들 추가
+        // 하위 뷰들 추가
         view.addSubview(productCollectionView)
         view.addSubview(topMenuBar)
         view.addSubview(orderTable)
         view.addSubview(orderVC)
         view.addSubview(logo)
         
-        //컬렉션뷰 제약조건
         productCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview() .offset(190)
             make.bottom.equalToSuperview().offset(-227)
             make.left.equalToSuperview().offset(17)
             make.right.equalToSuperview().offset(-17)
         }
+        
         topMenuBar.snp.makeConstraints {
             $0.top.equalToSuperview().offset(131)
             $0.bottom.equalToSuperview().offset(-706)
             $0.left.equalToSuperview().offset(16)
             $0.right.equalToSuperview().offset(-16)
         }
+        
+        // 장바구니 목록 제약
         orderTable.snp.makeConstraints { make in
             make.top.equalTo(productCollectionView.snp.bottom).offset(6)
             make.bottom.equalToSuperview().offset(-122)
             make.left.right.equalToSuperview().inset(27)
         }
+        
+        // 버튼 제약 조건
         orderVC.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(780)
             make.bottom.equalToSuperview().inset(48)
             make.left.right.equalToSuperview().inset(31)
         }
+      
         logo.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(72)
             make.bottom.equalToSuperview().inset(756)
             make.leading.trailing.equalToSuperview().inset(158)
-            // 상단158 좌우72 , 하단756
         }
 
     }
     
-    
     func configureCollectionView() {
         let collectionView = productCollectionView.collectionView
-        // 페이징스크롤을 활성화함. ex) 아이폰 홈화면처럼 살짝만 넘겨도 한페이지가 넘어감 false일 경우 흐물흐물하게 넘어가다만다.
+        // 페이징스크롤을 활성화함. 
         collectionView.isPagingEnabled = true
         // 인디게이터를 비활성화
         collectionView.showsHorizontalScrollIndicator = false
         // 걍 빠르게 해주는거
         collectionView.decelerationRate = .fast
-        //delegate를 viewController 스스로가 하겠다.
+        // delegate를 viewController self로 지정
         collectionView.delegate = self
-        //dataSource를 viewController 스스로가 하겠다.
+        // dataSource를 viewController self로 지정
         collectionView.dataSource = self
         // 셀을 재사용 할 수 있게 해주는것
         collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: MyCollectionViewCell.identifier)
@@ -144,17 +159,16 @@ extension ViewController: UICollectionViewDataSource, MyCelldelegate {
         orderTable.loadData()
     }
     
-    //컬렉션뷰의 섹션 개수
+    // 컬렉션뷰의 섹션 개수
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    //셀의 개수를 ProductsData의 count만큼 만든다.
+    // 셀의 개수를 ProductsData의 count만큼 생성
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         currentData.count
     }
     
-    //Error방지?
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.identifier, for: indexPath)
                 as? MyCollectionViewCell else {
@@ -169,7 +183,7 @@ extension ViewController: UICollectionViewDataSource, MyCelldelegate {
     
     
 }
-//셀 크기 설정
+// 셀 크기 설정
 extension ViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
@@ -194,6 +208,16 @@ extension ViewController: ButtonDelegate {
     func getPrice() -> Int {
         return orderTable.totalPrice
     }
-    
-    
+
+}
+
+// SplashView 사라지게 하는 함수
+extension ViewController {
+    func dismissSplashView() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.splashView.alpha = 0
+        }) { _ in
+            self.splashView.removeFromSuperview()
+        }
+    }
 }
