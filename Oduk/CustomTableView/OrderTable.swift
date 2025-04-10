@@ -20,18 +20,15 @@ class OrderTable: UIView {
         
         self.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-//            make.top.equalTo(self.safeAreaLayoutGuide).offset(594)
-//            make.leading.equalTo(self.safeAreaLayoutGuide).offset(27)
-//            make.width.equalTo(348)
             make.edges.equalToSuperview()
             make.height.equalTo(99)
         }
+        
         return tableView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .cyan
         setupTableView()
         loadData()
         makeLabel()
@@ -68,12 +65,12 @@ class OrderTable: UIView {
         }
         
         countLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.bottom)
+            make.top.equalTo(self.snp.bottom).offset(5)
             make.leading.equalTo(170)
         }
         
         priceLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.bottom)
+            make.top.equalTo(self.snp.bottom).offset(5)
             make.leading.equalTo(countLabel.snp.trailing).offset(46)
         }
     }
@@ -89,6 +86,12 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
         cell.delegate = self
         cell.indexPath = indexPath
         cell.bind(model: dataSource[indexPath.row])
+        cell.backgroundColor = UIColor(
+            red: 248/255.0,
+            green: 248/255.0,
+            blue: 248/255.0,
+            alpha: 1.0
+        )
         return cell
     }
     
