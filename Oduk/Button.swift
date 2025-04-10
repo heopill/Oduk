@@ -48,13 +48,16 @@ class OrderView: UIView {
         self.addSubview(payButton)
         
         cancelButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            
+//            make.edges.equalToSuperview()
+            make.left.equalTo(self.snp.left)
             make.width.equalTo(152)
             make.height.equalTo(46)
         }
 
         payButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+//            make.edges.equalToSuperview()
+            make.leading.equalTo(cancelButton.snp.trailing).offset(36)
             make.width.equalTo(152)
             make.height.equalTo(46)
         }

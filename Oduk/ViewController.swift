@@ -55,6 +55,11 @@ extension ViewController {
             make.bottom.equalToSuperview().offset(-122)
             make.left.right.equalToSuperview().inset(27)
         }
+        orderVC.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(780)
+            make.bottom.equalToSuperview().inset(48)
+            make.left.right.equalToSuperview().inset(31)
+        }
 
     }
     
