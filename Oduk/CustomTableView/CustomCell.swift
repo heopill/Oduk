@@ -118,6 +118,7 @@ class CustomCell: UITableViewCell {
     
     @objc private func minusButtonTapped() {
         print("마이너스 버튼 클릭")
+        guard count > 0 else { return }
         self.count -= 1
         model?.count = self.count
         middleLabel.text = String(count)
@@ -130,6 +131,12 @@ class CustomCell: UITableViewCell {
     }
     
     @objc private func plusButtonTapped() {
+        guard count < 10 else {
+                if let vc = self.parentViewController {
+                    OrderErrorHandler.showAlert(for: .maxLimitReached, in: vc)
+                }
+                return
+            }
         print("플러스 버튼 클릭")
         self.count += 1
         model?.count = self.count

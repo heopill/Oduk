@@ -9,6 +9,10 @@ import UIKit
 import SnapKit
 
 class OrderView: UIView {
+    
+    var totalCount: Int = 0
+    var totalPrice: Int = 0
+    var onCancelAll: (() -> Void)?
         
     let cancelButton: UIButton = {
         let button = UIButton(type: .system)
@@ -68,12 +72,44 @@ class OrderView: UIView {
     }
     
     
+    func updateSummary(totalCount: Int, totalPrice: Int) {
+        self.totalCount = totalCount
+        self.totalPrice = totalPrice
+    }
+    
+    
     @objc func cancelAllOrders() {
-        print("모든 주문이 취소되었습니다.")
+        if let vc = self.parentViewController {
+            OrderErrorHandler.showAlert(for: .cancelConfirmation, in: vc) {
+                self.onCancelAll?()
+            }
+        }
     }
     
     @objc func processPayment() {
-        let total = 0
-        print("총 결제 금액: \(total)원")
+        if totalCount == 0 {
+            if let vc = self.parentViewController {
+                OrderErrorHandler.showAlert(for: .emptyOrder, in: vc)
+            }
+            return
+        }
+
+        print("총 결제 금액: \(totalPrice)원")
+    }
+    
+}
+
+// MARK: parentViewController
+
+extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while let responder = parentResponder {
+            if let vc = responder as? UIViewController {
+                return vc
+            }
+            parentResponder = responder.next
+        }
+        return nil
     }
 }

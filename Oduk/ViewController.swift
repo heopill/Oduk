@@ -30,6 +30,12 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         configureCollectionView()
         topMenuBar.topMenuBarDelegate = self
         topMenuBar(topMenuBar, didSelectIndex: 0)
+        
+        // orderView와 orderTable 연결
+        orderTable.orderView = orderVC
+        orderVC.onCancelAll = {
+            self.orderTable.clearOrders()
+        }
     }
     
     func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int) {
@@ -88,6 +94,13 @@ extension ViewController {
     
     func configureCollectionView() {
         let collectionView = productCollectionView.collectionView
+        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+               layout.scrollDirection = .horizontal
+               layout.minimumLineSpacing = 16
+               layout.minimumInteritemSpacing = 16
+               layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
+           }
         // 페이징스크롤을 활성화함. ex) 아이폰 홈화면처럼 살짝만 넘겨도 한페이지가 넘어감 false일 경우 흐물흐물하게 넘어가다만다.
         collectionView.isPagingEnabled = true
         // 인디게이터를 비활성화
@@ -141,8 +154,10 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
         
     }
     
-    
 }
+
+
+
 
 //ProductModel.swift파일에 있는 ProductModel struct에 값을 넣어주어서 이름과 이미지 가격 백그라운드 표시
 //private var ProductsData: [ProductModel] = [

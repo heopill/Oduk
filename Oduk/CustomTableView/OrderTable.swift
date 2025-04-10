@@ -14,10 +14,10 @@ class OrderTable: UIView {
     private let countLabel = UILabel()
     private let priceLabel = UILabel()
     var dataSource = [CustomCellModel]()
+    weak var orderView: OrderView?
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        
         self.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -74,7 +74,17 @@ class OrderTable: UIView {
             make.leading.equalTo(countLabel.snp.trailing).offset(46)
         }
     }
-}
+    
+    
+    func clearOrders() {
+            dataSource.removeAll()
+            tableView.reloadData()
+            countLabel.text = "총 0개"
+            priceLabel.text = "0원"
+            orderView?.updateSummary(totalCount: 0, totalPrice: 0)
+        }
+    }
+
 
 extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -118,5 +128,7 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
         
         countLabel.text = "총 \(totalCount)개"
         priceLabel.text = "₩ \(totalPrice)원"
+        orderView?.updateSummary(totalCount: totalCount, totalPrice: totalPrice)
     }
+    
 }
