@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     let productCollectionView = ProductCollectionView()
     let topMenuBar = TopMenuBar()
     let orderTable = OrderTable()
+    let orderVC = OrderView()
+      
     
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
@@ -32,6 +34,7 @@ extension ViewController {
         view.addSubview(productCollectionView)
         view.addSubview(topMenuBar)
         view.addSubview(orderTable)
+        view.addSubview(orderVC)
         //컬렉션뷰 제약조건
         productCollectionView.snp.makeConstraints { make in
             //            make.width.equalTo(368)
@@ -52,7 +55,7 @@ extension ViewController {
             make.bottom.equalToSuperview().offset(-122)
             make.left.right.equalToSuperview().inset(27)
         }
-        
+
     }
     
     
