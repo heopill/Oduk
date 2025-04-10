@@ -8,7 +8,7 @@
 import UIKit
 
 struct CustomCellModel {
-    let leftLabel: String
-    let rightLabel: String
+    var nameLabel: String
+    var priceLabel: String
     var count: Int = 1
 }

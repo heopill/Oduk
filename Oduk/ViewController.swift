@@ -11,7 +11,7 @@ import SnapKit
 class ViewController: UIViewController, TopMenuBarDelegate {
 
     var currentData: [ProductModel] = []
-    
+    var tableViewData: [(String, String)] = []
     //저장 프로퍼티는 extension에 넣을수 없음.
     let productCollectionView = ProductCollectionView()
     let topMenuBar = TopMenuBar()
@@ -19,8 +19,6 @@ class ViewController: UIViewController, TopMenuBarDelegate {
     let orderVC = OrderView()
     let logo = Logoview()
     
-
-
     
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
@@ -44,13 +42,14 @@ class ViewController: UIViewController, TopMenuBarDelegate {
 extension ViewController {
     func configureLayout() {
         
-        //아들뷰들 추가
         
+        //아들뷰들 추가
         view.addSubview(productCollectionView)
         view.addSubview(topMenuBar)
         view.addSubview(orderTable)
         view.addSubview(orderVC)
         view.addSubview(logo)
+        
         //컬렉션뷰 제약조건
         productCollectionView.snp.makeConstraints { make in
             //            make.width.equalTo(368)
@@ -106,7 +105,17 @@ extension ViewController {
 extension ViewController: UICollectionViewDelegate {
 }
 
-extension ViewController: UICollectionViewDataSource {
+extension ViewController: UICollectionViewDataSource, MyCelldelegate {
+    
+    func sendData(name: String, price: String) {
+        let newItem = CustomCellModel(nameLabel: name, priceLabel: price)
+        tableViewData.append((name, price))
+//        print("sendData입니다 \(tableViewData)")
+        orderTable.dataSource.append(newItem)
+//        print("sendData에서 append 이후\(orderTable.dataSource)")
+        orderTable.loadData()
+    }
+    
     //컬렉션뷰의 섹션 개수
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -124,6 +133,7 @@ extension ViewController: UICollectionViewDataSource {
             fatalError()
         }
         cell.configure(with: currentData[indexPath.row])
+        cell.delegate = self
         
         return cell
         
@@ -141,17 +151,4 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
         
     }
     
-    
 }
-
-//ProductModel.swift파일에 있는 ProductModel struct에 값을 넣어주어서 이름과 이미지 가격 백그라운드 표시
-//private var ProductsData: [ProductModel] = [
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원")
-//]

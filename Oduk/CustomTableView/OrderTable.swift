@@ -13,6 +13,7 @@ class OrderTable: UIView {
     
     private let countLabel = UILabel()
     private let priceLabel = UILabel()
+    
     var dataSource = [CustomCellModel]()
     
     private lazy var tableView: UITableView = {
@@ -43,14 +44,16 @@ class OrderTable: UIView {
         tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = UIColor(
+            red: 248/255.0,
+            green: 248/255.0,
+            blue: 248/255.0,
+            alpha: 1.0
+        )
         tableView.separatorStyle = .none // 셀들의 구분선 제거
     }
     
-    private func loadData() {
-        dataSource.append(.init(leftLabel: "고독한 영라기", rightLabel: "500"))
-        dataSource.append(.init(leftLabel: "수줍은 원시기", rightLabel: "500"))
-        dataSource.append(.init(leftLabel: "배고픈 다서이", rightLabel: "500"))
-        dataSource.append(.init(leftLabel: "정열의 성피리", rightLabel: "500"))
+    func loadData() {
         tableView.reloadData()
         didUpdateCounts()
     }
@@ -66,12 +69,12 @@ class OrderTable: UIView {
         
         countLabel.snp.makeConstraints { make in
             make.top.equalTo(self.snp.bottom).offset(5)
-            make.leading.equalTo(170)
+            make.leading.equalTo(167)
         }
         
         priceLabel.snp.makeConstraints { make in
             make.top.equalTo(self.snp.bottom).offset(5)
-            make.leading.equalTo(countLabel.snp.trailing).offset(46)
+            make.trailing.equalTo(self.snp.trailing).inset(19)
         }
     }
 }
@@ -79,13 +82,14 @@ class OrderTable: UIView {
 extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier) as? CustomCell ?? CustomCell()
         cell.delegate = self
         cell.indexPath = indexPath
-        cell.bind(model: dataSource[indexPath.row])
+        cell.bind(model: dataSource[indexPath.row]) // 0번째 cell에는 dataSource[0] 데이터
         cell.backgroundColor = UIColor(
             red: 248/255.0,
             green: 248/255.0,
@@ -102,6 +106,10 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
     
     func didChangeCount(to newCount: Int, at indexPath: IndexPath) {
         dataSource[indexPath.row].count = newCount
+        if dataSource[indexPath.row].count == 0 { // 개수가 0일 때 삭제하고 지워버림
+            dataSource.remove(at: indexPath.row) // 카운트가 0개인 셀 삭제
+            loadData() // 테이블 뷰 reLoad
+        }
         didUpdateCounts() // 다시 계산해서 업데이트
     }
     
@@ -111,7 +119,7 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
         
         for item in dataSource {
             let count = item.count
-            let price = Int(item.rightLabel) ?? 0
+            let price = Int(item.priceLabel.dropLast(1)) ?? 0
             totalCount += count
             totalPrice += count * price
         }
