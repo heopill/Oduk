@@ -8,6 +8,10 @@
 import UIKit
 import SnapKit
 
+protocol MyCelldelegate {
+    func sendData(name: String, price: String)
+}
+
 class ProductCollectionView: UIView {
     
     //collectionView 상수 생성 타입은 UICollectionView
@@ -89,6 +93,8 @@ class MyCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    var delegate: MyCelldelegate?
+    
 //    private let logo: UIImageView = {
 //        let image = UIImageView()
 //        image.image = UIImage(named: "오더ㅋ핑크")
@@ -147,8 +153,13 @@ class MyCollectionViewCell: UICollectionViewCell {
         priceLabel.text = viewModel.price
     }
     
-    @objc func buttonTapped() {
-        print("buttonTapped")
+    @objc func buttonTapped(_ sender: ProductCollectionView) {
+        guard let productName = self.nameLabel.text else { return }
+        guard let productPrice = self.priceLabel.text else { return }
+        delegate?.sendData(name: productName, price: productPrice)
+        print(productName)
+        print(productPrice)
+        
     }
 }
 

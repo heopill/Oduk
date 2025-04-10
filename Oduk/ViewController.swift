@@ -11,7 +11,7 @@ import SnapKit
 class ViewController: UIViewController, TopMenuBarDelegate {
 
     var currentData: [ProductModel] = []
-    
+    var tableViewData: [(String, String)] = []
     //저장 프로퍼티는 extension에 넣을수 없음.
     let productCollectionView = ProductCollectionView()
     let topMenuBar = TopMenuBar()
@@ -19,8 +19,6 @@ class ViewController: UIViewController, TopMenuBarDelegate {
     let orderVC = OrderView()
     let logo = Logoview()
     
-
-
     
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
@@ -30,31 +28,43 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         configureCollectionView()
         topMenuBar.topMenuBarDelegate = self
         topMenuBar(topMenuBar, didSelectIndex: 0)
+        
+        orderVC.delegate = self
+        
+        orderTable.orderView = orderVC
+        orderVC.delegate?.removeData()
+        
     }
     
     func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int) {
-        guard let category = ProductCategory(rawValue: index) else { return }
-        currentData = ProductManager.getProducts(category)
-        productCollectionView.collectionView.reloadData()
+            guard let category = ProductCategory(rawValue: index) else { return }
+            currentData = ProductManager.getProducts(category)
+            
+            let indexPath = IndexPath(item: 0, section: 0)
+            productCollectionView.collectionView.scrollToItem(at: indexPath, at: .left, animated: false)
+            
+            productCollectionView.collectionView.reloadData()
+        
+//            pageControl.numberOfPages = (currentData.count/4)
+//            pageControl.currentPage = 0
+        }
     }
-}
 
 
 //컬렉션뷰 레아이웃 설정 클로저를 이용해 초기화 해주고 0으로 설정해줬기때문에 제약조건 설정함.
 extension ViewController {
     func configureLayout() {
         
-        //아들뷰들 추가
         
+        //아들뷰들 추가
         view.addSubview(productCollectionView)
         view.addSubview(topMenuBar)
         view.addSubview(orderTable)
         view.addSubview(orderVC)
         view.addSubview(logo)
+        
         //컬렉션뷰 제약조건
         productCollectionView.snp.makeConstraints { make in
-            //            make.width.equalTo(368)
-            //            make.height.equalTo(457)
             make.top.equalToSuperview() .offset(190)
             make.bottom.equalToSuperview().offset(-227)
             make.left.equalToSuperview().offset(17)
@@ -80,7 +90,7 @@ extension ViewController {
             make.top.equalToSuperview().offset(72)
             make.bottom.equalToSuperview().inset(756)
             make.leading.trailing.equalToSuperview().inset(158)
-//            상단158 좌우72 , 하단756
+            // 상단158 좌우72 , 하단756
         }
 
     }
@@ -102,11 +112,16 @@ extension ViewController {
         collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: MyCollectionViewCell.identifier)
     }
 }
-//컬렉션 뷰 델리게이트
-extension ViewController: UICollectionViewDelegate {
-}
 
-extension ViewController: UICollectionViewDataSource {
+extension ViewController: UICollectionViewDataSource, MyCelldelegate {
+    
+    func sendData(name: String, price: String) {
+        let newItem = CustomCellModel(nameLabel: name, priceLabel: price)
+        tableViewData.append((name, price))
+        orderTable.dataSource.append(newItem)
+        orderTable.loadData()
+    }
+    
     //컬렉션뷰의 섹션 개수
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -124,6 +139,7 @@ extension ViewController: UICollectionViewDataSource {
             fatalError()
         }
         cell.configure(with: currentData[indexPath.row])
+        cell.delegate = self
         
         return cell
         
@@ -141,17 +157,21 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
         
     }
     
-    
 }
 
-//ProductModel.swift파일에 있는 ProductModel struct에 값을 넣어주어서 이름과 이미지 가격 백그라운드 표시
-//private var ProductsData: [ProductModel] = [
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원")
-//]
+extension ViewController: ButtonDelegate {
+    func removeData() {
+        orderTable.dataSource.removeAll()
+        orderTable.loadData()
+    }
+    
+    func getCount() -> Int {
+        return orderTable.totalCount
+    }
+    
+    func getPrice() -> Int {
+        return orderTable.totalPrice
+    }
+    
+    
+}

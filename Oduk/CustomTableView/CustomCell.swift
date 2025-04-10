@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 
+
+
 protocol CustomCellDelegate: AnyObject {
     func didChangeCount(to newCount: Int, at indexPath: IndexPath)
 }
@@ -19,9 +21,9 @@ class CustomCell: UITableViewCell {
     static let identifier = "CustomCell"
     private var count: Int = 1
     private var model: CustomCellModel?
-    var indexPath: IndexPath? 
+    var indexPath: IndexPath?
     
-    let leftLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont(name: "GmarketSansMedium", size: 13)
@@ -51,7 +53,7 @@ class CustomCell: UITableViewCell {
         return button
     }()
     
-    let rightLabel: UILabel = {
+    let priceLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
         label.font = UIFont(name: "GmarketSansMedium", size: 13)
@@ -63,12 +65,11 @@ class CustomCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         
-        [leftLabel, minusButton, middleLabel, plusButton, rightLabel].forEach {
+        [nameLabel, minusButton, middleLabel, plusButton, priceLabel].forEach {
             contentView.addSubview($0)
         }
         
         setupConstraints()
-        //        setupActions()
     }
     
     required init?(coder: NSCoder) {
@@ -76,14 +77,14 @@ class CustomCell: UITableViewCell {
     }
     
     private func setupConstraints() {
-        leftLabel.snp.makeConstraints { make in
+        nameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(19)
             make.centerY.equalToSuperview()
             make.width.equalTo(103)
             make.height.equalTo(21)
         }
         minusButton.snp.makeConstraints { make in
-            make.leading.equalTo(leftLabel.snp.trailing).offset(31)
+            make.leading.equalTo(nameLabel.snp.trailing).offset(31)
             make.centerY.equalToSuperview()
             make.height.equalTo(20)
         }
@@ -101,18 +102,13 @@ class CustomCell: UITableViewCell {
             make.width.height.equalTo(20)
         }
         
-        rightLabel.snp.makeConstraints { make in
+        priceLabel.snp.makeConstraints { make in
             make.leading.equalTo(plusButton.snp.trailing).offset(27)
             make.centerY.equalToSuperview()
             make.width.equalTo(72)
             make.height.equalTo(21)
         }
     }
-    
-    //    private func setupActions() {
-    //        minusButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
-    //        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
-    //    }
     
     // MARK: - Button Actions
     
@@ -121,11 +117,15 @@ class CustomCell: UITableViewCell {
         self.count -= 1
         model?.count = self.count
         middleLabel.text = String(count)
-        if let rightValue = Int(model?.rightLabel ?? "0") {
-            rightLabel.text = "\(rightValue * count)원"
+        if let rightValue = Int(model?.priceLabel.dropLast(1) ?? "0") {
+            priceLabel.text = "\(rightValue * count)원"
         }
         if let index = indexPath {
             delegate?.didChangeCount(to: count, at: index)
+        }
+        
+        if count == 0 {
+            self.removeFromSuperview()
         }
     }
     
@@ -134,8 +134,8 @@ class CustomCell: UITableViewCell {
         self.count += 1
         model?.count = self.count
         middleLabel.text = String(count)
-        if let rightValue = Int(model?.rightLabel ?? "0") {
-            rightLabel.text = "\(rightValue * count)원"
+        if let rightValue = Int(model?.priceLabel.dropLast(1) ?? "0") {
+            priceLabel.text = "\(rightValue * count)원"
         }
         if let index = indexPath {
             delegate?.didChangeCount(to: count, at: index)
@@ -150,8 +150,8 @@ extension CustomCell {
     public func bind(model: CustomCellModel) {
         self.model = model
         self.count = model.count
-        leftLabel.text = model.leftLabel
+        nameLabel.text = model.nameLabel
         middleLabel.text = String(count)
-        rightLabel.text = "\(Int(model.rightLabel) ?? 0 * model.count)원"
+        priceLabel.text = "\(Int(model.priceLabel.dropLast(1)) ?? 0 * model.count)원"
     }
 }
