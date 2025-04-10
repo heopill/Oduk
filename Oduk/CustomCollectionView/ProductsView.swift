@@ -58,7 +58,7 @@ class MyCollectionViewCell: UICollectionViewCell {
         button.backgroundColor = .clear
         button.imageView?.contentMode = .scaleAspectFit
         button.clipsToBounds = true
-        button.setImage(UIImage(named: "장바구니누끼"), for: .normal)
+        button.setImage(UIImage(named: "장바구니"), for: .normal)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchDown)
         return button
     }()
@@ -88,6 +88,12 @@ class MyCollectionViewCell: UICollectionViewCell {
         label.font = UIFont(name: "GmarketSansMedium", size: 14)
         return label
     }()
+    
+//    private let logo: UIImageView = {
+//        let image = UIImageView()
+//        image.image = UIImage(named: "오더ㅋ핑크")
+//        return image
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
