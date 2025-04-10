@@ -113,7 +113,7 @@ class CustomCell: UITableViewCell {
     // MARK: - Button Actions
     
     @objc private func minusButtonTapped() {
-        print("마이너스 버튼 클릭")
+//        print("마이너스 버튼 클릭")
         self.count -= 1
         model?.count = self.count
         middleLabel.text = String(count)
@@ -130,7 +130,7 @@ class CustomCell: UITableViewCell {
     }
     
     @objc private func plusButtonTapped() {
-        print("플러스 버튼 클릭")
+//        print("플러스 버튼 클릭")
         self.count += 1
         model?.count = self.count
         middleLabel.text = String(count)
