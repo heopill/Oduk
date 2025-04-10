@@ -68,6 +68,7 @@
     <td>
       - 상단 메뉴 카테고리 바 구현<br/>
       - ViewController 연결 <br/>
+      - SplashView 제작 <br/>
       - Figma 디자인
     </td>
     <td align="center">
