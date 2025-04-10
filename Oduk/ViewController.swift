@@ -19,6 +19,7 @@ class ViewController: UIViewController, TopMenuBarDelegate {
     let orderVC = OrderView()
     let logo = Logoview()
     
+    var pageControl: UIPageControl! // 빨간 점
     
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
@@ -26,8 +27,11 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         view.backgroundColor = .white
         configureLayout()
         configureCollectionView()
+        setupPageControl()
+        
         topMenuBar.topMenuBarDelegate = self
         topMenuBar(topMenuBar, didSelectIndex: 0)
+        
         
         orderVC.delegate = self
         
@@ -35,6 +39,24 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         orderVC.delegate?.removeData()
         
     }
+    
+    func setupPageControl() {
+            pageControl = UIPageControl()
+            pageControl.tintColor = .gray
+            pageControl.currentPageIndicatorTintColor = .red
+            pageControl.pageIndicatorTintColor = .lightGray
+            
+            view.addSubview(pageControl)
+            pageControl.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.bottom.equalToSuperview().inset(220)
+            }
+        }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+            let page = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+            pageControl.currentPage = page
+        }
     
     func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int) {
             guard let category = ProductCategory(rawValue: index) else { return }
@@ -45,8 +67,8 @@ class ViewController: UIViewController, TopMenuBarDelegate {
             
             productCollectionView.collectionView.reloadData()
         
-//            pageControl.numberOfPages = (currentData.count/4)
-//            pageControl.currentPage = 0
+            pageControl.numberOfPages = (currentData.count/4)
+            pageControl.currentPage = 0
         }
     }
 
