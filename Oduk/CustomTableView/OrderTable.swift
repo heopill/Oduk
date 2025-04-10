@@ -13,8 +13,13 @@ class OrderTable: UIView {
     
     private let countLabel = UILabel()
     private let priceLabel = UILabel()
+   
+    var totalCount = 0
+    var totalPrice = 0
     
     var dataSource = [CustomCellModel]()
+    
+    weak var orderView: OrderView?
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -58,7 +63,7 @@ class OrderTable: UIView {
         didUpdateCounts()
     }
     
-    func makeLabel() {
+    private func makeLabel() {
         
         countLabel.font = UIFont(name: "GmarketSansMedium", size: 14)
         priceLabel.font = UIFont(name: "GmarketSansMedium", size: 14)
@@ -77,6 +82,8 @@ class OrderTable: UIView {
             make.trailing.equalTo(self.snp.trailing).inset(19)
         }
     }
+    
+
 }
 
 extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
@@ -114,11 +121,10 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
     }
     
     func didUpdateCounts() {
-        var totalCount = 0
-        var totalPrice = 0
-        
+        totalCount = 0
+        totalPrice = 0
         for item in dataSource {
-            let count = item.count
+            let count = item.count 
             let price = Int(item.priceLabel.dropLast(1)) ?? 0
             totalCount += count
             totalPrice += count * price
@@ -127,4 +133,5 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
         countLabel.text = "총 \(totalCount)개"
         priceLabel.text = "₩ \(totalPrice)원"
     }
+
 }

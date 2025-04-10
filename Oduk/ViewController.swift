@@ -28,14 +28,27 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         configureCollectionView()
         topMenuBar.topMenuBarDelegate = self
         topMenuBar(topMenuBar, didSelectIndex: 0)
+        
+        orderVC.delegate = self
+        
+        orderTable.orderView = orderVC
+        orderVC.delegate?.removeData()
+        
     }
     
     func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int) {
-        guard let category = ProductCategory(rawValue: index) else { return }
-        currentData = ProductManager.getProducts(category)
-        productCollectionView.collectionView.reloadData()
+            guard let category = ProductCategory(rawValue: index) else { return }
+            currentData = ProductManager.getProducts(category)
+            
+            let indexPath = IndexPath(item: 0, section: 0)
+            productCollectionView.collectionView.scrollToItem(at: indexPath, at: .left, animated: false)
+            
+            productCollectionView.collectionView.reloadData()
+        
+//            pageControl.numberOfPages = (currentData.count/4)
+//            pageControl.currentPage = 0
+        }
     }
-}
 
 
 //컬렉션뷰 레아이웃 설정 클로저를 이용해 초기화 해주고 0으로 설정해줬기때문에 제약조건 설정함.
@@ -52,8 +65,6 @@ extension ViewController {
         
         //컬렉션뷰 제약조건
         productCollectionView.snp.makeConstraints { make in
-            //            make.width.equalTo(368)
-            //            make.height.equalTo(457)
             make.top.equalToSuperview() .offset(190)
             make.bottom.equalToSuperview().offset(-227)
             make.left.equalToSuperview().offset(17)
@@ -79,7 +90,7 @@ extension ViewController {
             make.top.equalToSuperview().offset(72)
             make.bottom.equalToSuperview().inset(756)
             make.leading.trailing.equalToSuperview().inset(158)
-//            상단158 좌우72 , 하단756
+            // 상단158 좌우72 , 하단756
         }
 
     }
@@ -101,18 +112,13 @@ extension ViewController {
         collectionView.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: MyCollectionViewCell.identifier)
     }
 }
-//컬렉션 뷰 델리게이트
-extension ViewController: UICollectionViewDelegate {
-}
 
 extension ViewController: UICollectionViewDataSource, MyCelldelegate {
     
     func sendData(name: String, price: String) {
         let newItem = CustomCellModel(nameLabel: name, priceLabel: price)
         tableViewData.append((name, price))
-//        print("sendData입니다 \(tableViewData)")
         orderTable.dataSource.append(newItem)
-//        print("sendData에서 append 이후\(orderTable.dataSource)")
         orderTable.loadData()
     }
     
@@ -150,5 +156,22 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
         return size
         
     }
+    
+}
+
+extension ViewController: ButtonDelegate {
+    func removeData() {
+        orderTable.dataSource.removeAll()
+        orderTable.loadData()
+    }
+    
+    func getCount() -> Int {
+        return orderTable.totalCount
+    }
+    
+    func getPrice() -> Int {
+        return orderTable.totalPrice
+    }
+    
     
 }
