@@ -15,7 +15,7 @@ protocol TopMenuBarDelegate: AnyObject {
 class TopMenuBar: UIView {
     
     weak var topMenuBarDelegate: TopMenuBarDelegate?
-    
+   
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(segmentControl)
@@ -94,6 +94,7 @@ class TopMenuBar: UIView {
             self.segmentControl.layoutIfNeeded()
         }
         topMenuBarDelegate?.topMenuBar(self, didSelectIndex: segment.selectedSegmentIndex)
+
     }
     
     func setUpUnderLineBar() {
