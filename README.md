@@ -50,6 +50,7 @@
     <td align="center">🧑‍💼 팀장</td>
     <td>
       - 주문 내역 리스트 화면 구현<br/>
+      - ViewController 연결 <br/>
       - README 문서 작성
     </td>
     <td align="center">
@@ -66,7 +67,8 @@
     <td align="center">👤 팀원</td>
     <td>
       - 상단 메뉴 카테고리 바 구현<br/>
-      - ViewController 연결<br/>
+      - ViewController 연결 <br/>
+      - SplashView 제작 <br/>
       - Figma 디자인
     </td>
     <td align="center">
@@ -83,6 +85,7 @@
     <td align="center">👤 팀원</td>
     <td>
       - '취소하기 / 결제하기' 버튼 화면 구현<br/>
+      - ViewController 연결 <br/>
       - 예외 처리 화면 구성
     </td>
     <td align="center">
@@ -98,7 +101,8 @@
     <td align="center"><b>최영락</b></td>
     <td align="center">👤 팀원</td>
     <td>
-      - 상품 선택 화면 구현
+      - 상품 선택 화면 구현 <br/>
+      - ViewController 연결 <br/>
     </td>
     <td align="center">
       <a href="https://github.com/yeungrak">yeungrak</a>
