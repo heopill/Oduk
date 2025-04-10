@@ -31,17 +31,6 @@ class ViewController: UIViewController, TopMenuBarDelegate {
 
         configureLayout()
 
-        splashView.frame = view.bounds
-        view.addSubview(splashView)
-      
-        // 여기서 맨 앞의 뷰로 확실히 지정해줌
-        view.bringSubviewToFront(splashView)
-
-        // 현재에서 2초 후에 dismiss되게 세팅
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.dismissSplashView()
-        }
-
         configureCollectionView()
         setupPageControl()
         
@@ -49,7 +38,18 @@ class ViewController: UIViewController, TopMenuBarDelegate {
         topMenuBar(topMenuBar, didSelectIndex: 0)
         
         orderVC.delegate = self
-
+        
+        splashView.frame = view.bounds
+        view.addSubview(splashView)
+        
+        // 여기서 맨 앞의 뷰로 확실히 지정해줌
+        view.bringSubviewToFront(splashView)
+        
+        // 현재에서 2초 후에 dismiss되게 세팅
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.dismissSplashView()
+        }
+        
         orderTable.orderView = orderVC
         orderVC.delegate?.removeData()
     }
@@ -90,12 +90,9 @@ class ViewController: UIViewController, TopMenuBarDelegate {
 extension ViewController {
     func configureLayout() {
         
-        // 하위 뷰들 추가
-        view.addSubview(productCollectionView)
-        view.addSubview(topMenuBar)
-        view.addSubview(orderTable)
-        view.addSubview(orderVC)
-        view.addSubview(logo)
+        [logo, topMenuBar, productCollectionView, orderTable, orderVC].forEach{
+            view.addSubview($0)
+        }
         
         productCollectionView.snp.makeConstraints { make in
             make.top.equalToSuperview() .offset(190)
