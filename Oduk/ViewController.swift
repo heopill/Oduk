@@ -15,11 +15,12 @@ class ViewController: UIViewController {
         
         view.backgroundColor = .white
 
-        let orderVC = OrderViewController()
-        addChild(orderVC)
-        view.addSubview(orderVC.view)
-        orderVC.view.frame = view.bounds
-        orderVC.didMove(toParent: self)
+        let orderVC = OrderView()
+        self.view = orderVC
+//        addChild(orderVC)
+//        view.addSubview(orderVC.view)
+//        orderVC.view.frame = view.bounds
+//        orderVC.didMove(toParent: self)
     }
 }
             

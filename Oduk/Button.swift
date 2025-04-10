@@ -8,66 +8,62 @@
 import UIKit
 import SnapKit
 
-class OrderViewController: UIViewController {
-    
-    var orderItems: [OrderItem] = [
-        OrderItem(name: "피곤한 영락티", quantity: 1, price: 500),
-        OrderItem(name: "배고픈 다성티", quantity: 2, price: 500),
-        OrderItem(name: "수줍은 원식티", quantity: 1, price: 500),
-        OrderItem(name: "정열의 성필티", quantity: 3, price: 500)
-    ]
-    
+class OrderView: UIView {
+        
     let cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("전체 취소", for: .normal)
-        button.backgroundColor = .white
         button.setTitleColor(UIColor(red: 229/255, green: 56/255, blue: 136/255, alpha: 1.0), for: .normal)
+        button.titleLabel?.font = UIFont(name: "GmarketSansBold", size: 18)
+        button.backgroundColor = .white
         button.layer.borderColor = UIColor(red: 229/255, green: 56/255, blue: 136/255, alpha: 1.0).cgColor
         button.layer.borderWidth = 1.5
-        button.layer.cornerRadius = 59
+        button.layer.cornerRadius = 16
         return button
     }()
     
     let payButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("결제하기", for: .normal)
-        button.backgroundColor = UIColor(red: 229/255, green: 56/255, blue: 136/255, alpha: 1.0)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 59
+        button.titleLabel?.font = UIFont(name: "GmarketSansBold", size: 18)
+        button.backgroundColor = UIColor(red: 229/255, green: 56/255, blue: 136/255, alpha: 1.0)
+        button.layer.cornerRadius = 16
         return button
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+            super.init(frame: frame)
+            setupUI()
+        }
         
-        view.backgroundColor = .white
+        // 스토리보드를 사용할 때 코드랑 연결해주는 부분?
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+    
+    private func setupUI() {
         
-        view.addSubview(cancelButton)
-        view.addSubview(payButton)
+        self.addSubview(cancelButton)
+        self.addSubview(payButton)
         
         cancelButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(31)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.edges.equalToSuperview()
             make.width.equalTo(152)
             make.height.equalTo(46)
         }
 
         payButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(31)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.edges.equalToSuperview()
             make.width.equalTo(152)
             make.height.equalTo(46)
         }
         
         cancelButton.addTarget(self, action: #selector(cancelAllOrders), for: .touchUpInside)
         payButton.addTarget(self, action: #selector(processPayment), for: .touchUpInside)
+        
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        cancelButton.layer.cornerRadius = cancelButton.frame.height / 3
-        payButton.layer.cornerRadius = payButton.frame.height / 3
-    }
     
     @objc func cancelAllOrders() {
         print("모든 주문이 취소되었습니다.")
