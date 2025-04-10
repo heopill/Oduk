@@ -8,7 +8,13 @@
 import UIKit
 import SnapKit
 
+protocol TopMenuBarDelegate: AnyObject {
+    func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int)
+}
+
 class TopMenuBar: UIView {
+    
+    weak var topMenuBarDelegate: TopMenuBarDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -87,6 +93,7 @@ class TopMenuBar: UIView {
             }
             self.segmentControl.layoutIfNeeded()
         }
+        topMenuBarDelegate?.topMenuBar(self, didSelectIndex: segment.selectedSegmentIndex)
     }
     
     func setUpUnderLineBar() {

@@ -8,7 +8,9 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, TopMenuBarDelegate {
+
+    var currentData: [ProductModel] = []
     
     //저장 프로퍼티는 extension에 넣을수 없음.
     let productCollectionView = ProductCollectionView()
@@ -23,8 +25,17 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         configureLayout()
         configureCollectionView()
+        topMenuBar.topMenuBarDelegate = self
+        topMenuBar(topMenuBar, didSelectIndex: 0)
+    }
+    
+    func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int) {
+        guard let category = ProductCategory(rawValue: index) else { return }
+        currentData = ProductManager.getProducts(category)
+        productCollectionView.collectionView.reloadData()
     }
 }
+
 
 //컬렉션뷰 레아이웃 설정 클로저를 이용해 초기화 해주고 0으로 설정해줬기때문에 제약조건 설정함.
 extension ViewController {
@@ -92,7 +103,7 @@ extension ViewController: UICollectionViewDataSource {
     
     //셀의 개수를 ProductsData의 count만큼 만든다.
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        ProductsData.count
+        currentData.count
     }
     
     //Error방지?
@@ -101,8 +112,7 @@ extension ViewController: UICollectionViewDataSource {
                 as? MyCollectionViewCell else {
             fatalError()
         }
-        cell.configure(with: ProductsData[indexPath.row])
-        
+        cell.configure(with: currentData[indexPath.row])
         
         return cell
         
@@ -124,13 +134,13 @@ extension ViewController: UICollectionViewDelegateFlowLayout{
 }
 
 //ProductModel.swift파일에 있는 ProductModel struct에 값을 넣어주어서 이름과 이미지 가격 백그라운드 표시
-private var ProductsData: [ProductModel] = [
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
-    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원")
-]
+//private var ProductsData: [ProductModel] = [
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원"),
+//    ProductModel(name: "피규어", backgroundColor: .white, imageName: "피규어", price: "3000원")
+//]
