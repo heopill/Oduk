@@ -18,22 +18,35 @@ class ViewController: UIViewController, TopMenuBarDelegate {
     let orderTable = OrderTable()
     let orderVC = OrderView()
     let logo = Logoview()
-    
-    
+
+    // SplashView 생성
+    let splashView = SplashView()
+
     //생명주기중 하나인 viewDidLoad를 이용해 뷰가 로드될때 뷰의 배경을 흰색으로 만들고 함수들 실행
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
         configureLayout()
+
+        splashView.frame = view.bounds
+        view.addSubview(splashView)
+        // 여기서 맨 앞의 뷰로 확실히 지정해줌
+        view.bringSubviewToFront(splashView)
+
+        // 현재에서 2초 후에 dismiss되게 세팅
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.dismissSplashView()
+        }
+
         configureCollectionView()
         topMenuBar.topMenuBarDelegate = self
         topMenuBar(topMenuBar, didSelectIndex: 0)
         
         orderVC.delegate = self
-        
+
         orderTable.orderView = orderVC
         orderVC.delegate?.removeData()
-        
     }
     
     func topMenuBar(_ topMenuBar: TopMenuBar, didSelectIndex index: Int) {
@@ -172,6 +185,16 @@ extension ViewController: ButtonDelegate {
     func getPrice() -> Int {
         return orderTable.totalPrice
     }
-    
-    
+
+}
+
+// SplashView 사라지게 하는 함수
+extension ViewController {
+    func dismissSplashView() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.splashView.alpha = 0
+        }) { _ in
+            self.splashView.removeFromSuperview()
+        }
+    }
 }
