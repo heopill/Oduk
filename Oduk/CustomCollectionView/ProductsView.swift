@@ -157,8 +157,6 @@ class MyCollectionViewCell: UICollectionViewCell {
         guard let productName = self.nameLabel.text else { return }
         guard let productPrice = self.priceLabel.text else { return }
         delegate?.sendData(name: productName, price: productPrice)
-//        print(productName)
-//        print(productPrice)
         
     }
 }

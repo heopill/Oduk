@@ -11,8 +11,6 @@ import SnapKit
 class ViewController: UIViewController, TopMenuBarDelegate {
 
     var currentData: [ProductModel] = []
-    var tableViewData: [(String, String)] = []
-  
     let productCollectionView = ProductCollectionView()
     let topMenuBar = TopMenuBar()
     let orderTable = OrderTable()
@@ -151,8 +149,13 @@ extension ViewController: UICollectionViewDataSource, MyCelldelegate {
     
     func sendData(name: String, price: String) {
         let newItem = CustomCellModel(nameLabel: name, priceLabel: price)
-        tableViewData.append((name, price))
-        orderTable.dataSource.append(newItem)
+        print(newItem)
+        if let index = orderTable.dataSource.firstIndex(where: { $0.nameLabel == newItem.nameLabel}) {
+            orderTable.dataSource[index].count += 1
+        } else {
+            orderTable.dataSource.append(newItem)
+        }
+        
         orderTable.loadData()
     }
     
