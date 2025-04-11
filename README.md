@@ -2,8 +2,9 @@
 <h1 align="center">🧾 모바일 키오스크 앱 - 오더ㅋ</h1>
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/1d5af74f-2d20-4058-9207-3c0377677e57" alt="Image" />
+  <img src="https://github.com/user-attachments/assets/153cb6e1-be82-48c1-ad1f-45ffd5b6a3c3" width="600" />
 </div>
+
 
 ## 📋 프로젝트 설명
 **오더ㅋ**는 사용자가 좋아하는 것만 모은 **굿즈샵**을 모티브로 만들어진 앱입니다.
