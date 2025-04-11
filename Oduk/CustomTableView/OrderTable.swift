@@ -13,7 +13,8 @@ class OrderTable: UIView {
     
     private let countLabel = UILabel()
     private let priceLabel = UILabel()
-   
+    private let cartLabel = UILabel()
+    
     var totalCount = 0
     var totalPrice = 0
     
@@ -38,6 +39,7 @@ class OrderTable: UIView {
         setupTableView()
         loadData()
         makeLabel()
+        makeCartLabel()
     }
     
     // 스토리보드를 사용할 때 코드랑 연결해주는 부분?
@@ -81,9 +83,25 @@ class OrderTable: UIView {
             make.top.equalTo(self.snp.bottom).offset(5)
             make.trailing.equalTo(self.snp.trailing).inset(19)
         }
+        
     }
     
-
+    private func makeCartLabel() {
+        cartLabel.font = .systemFont(ofSize: 15)
+        cartLabel.text = "장바구니가 비어있습니다."
+        cartLabel.textAlignment = .center
+        
+        self.addSubview(cartLabel)
+        
+        cartLabel.snp.makeConstraints { make in
+            make.leading.equalTo(self.snp.leading)
+            make.top.equalTo(self.snp.top)
+            make.width.equalTo(self.snp.width)
+            make.height.equalTo(self.snp.height)
+        }
+        
+    }
+    
 }
 
 extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
@@ -124,7 +142,7 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
         totalCount = 0
         totalPrice = 0
         for item in dataSource {
-            let count = item.count 
+            let count = item.count
             let price = Int(item.priceLabel.dropLast(1)) ?? 0
             totalCount += count
             totalPrice += count * price
@@ -132,6 +150,12 @@ extension OrderTable: UITableViewDelegate, UITableViewDataSource, CustomCellDele
         
         countLabel.text = "총 \(totalCount)개"
         priceLabel.text = "₩ \(totalPrice)원"
+        
+        if totalCount == 0 {
+            cartLabel.isHidden = false
+        } else {
+            cartLabel.isHidden = true
+        }
     }
-
+    
 }
