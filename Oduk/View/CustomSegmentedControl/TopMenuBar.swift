@@ -91,7 +91,7 @@ class TopMenuBar: UIView {
             self.underLineBar.snp.updateConstraints {
                 $0.leading.equalTo(self.segmentControl.snp.leading).offset(leadingDistance)
             }
-            self.segmentControl.layoutIfNeeded()
+            self.layoutIfNeeded()
         }
         topMenuBarDelegate?.topMenuBar(self, didSelectIndex: segment.selectedSegmentIndex)
 
